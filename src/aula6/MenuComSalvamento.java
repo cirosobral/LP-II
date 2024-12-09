@@ -3,6 +3,7 @@ package aula6;
 import aula5.Pessoa;
 import java.io.*;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 
 // Classe principal para gerenciar um menu com funcionalidade de salvar/ler dados em um arquivo binário
@@ -20,6 +21,7 @@ public class MenuComSalvamento {
             Scanner in = new Scanner(System.in);
 
             // Apresenta o menu de opções para o usuário
+            System.out.println(); // Apresenta1 uma linha em branco antes do menu
             System.out.println("1 - Cadastrar pessoa");
             System.out.println("2 - Listar pessoas");
             System.out.println("3 - Excluir pessoa");
@@ -32,26 +34,37 @@ public class MenuComSalvamento {
             // Processa a opção escolhida pelo usuário
             switch (entrada) {
                 case "1":
-                    // Caso o usuário escolha cadastrar uma nova pessoa
-                    System.out.println("Digite o nome do elemento: ");
-                    String nome = in.nextLine();
-                    System.out.println("Digite a data de naçimento (aaaa-mm-dd): ");
-                    LocalDate data = LocalDate.parse(in.nextLine());
+                    try {
+                        // Caso o usuário escolha cadastrar uma nova pessoa
+                        System.out.print("Digite o nome do elemento: ");
+                        String nome = in.nextLine();
+                        System.out.print("Digite a data de naçimento (aaaa-mm-dd): ");
+                        LocalDate data = LocalDate.parse(in.nextLine());
 
-                    // Cria e adiciona a nova pessoa à lista
-                    pessoas.add(new Pessoa(nome, data));
+                        // Cria e adiciona a nova pessoa à lista
+                        pessoas.add(new Pessoa(nome, data));
 
-                    // Salva a lista atualizada no arquivo
-                    salvar(pessoas);
+                        // Salva a lista atualizada no arquivo
+                        salvar(pessoas);
+                    } catch (DateTimeParseException e) {
+                        // Trata os casos em que a data é inválida
+                        System.err.println("Data inválida");
+                    }
 
                     break;
                 case "2":
                     // Caso o usuário escolha listar todas as pessoas
                     int idx_pessoa = 0;
-                    for (Pessoa p : pessoas) {
-                        System.out.println("Pessoa " + ++idx_pessoa);
-                        System.out.println(p);
-                        System.out.println();
+
+                    if (pessoas.isEmpty()) {
+                        // Exibe mensagem se não houverem pessoas a serem exibidas
+                        System.out.println("\nNão há pessoas a exibir");
+                    } else {
+                        // Percorre a lista das pessoas e exibe na tela
+                        for (Pessoa p : pessoas) {
+                            System.out.println("\nPessoa " + ++idx_pessoa);
+                            System.out.println(p);
+                        }
                     }
 
                     break;
