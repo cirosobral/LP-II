@@ -30,6 +30,6 @@ public class Pessoa implements Serializable {
 
     @Override
     public String toString() {
-        return "Pessoa\nnome: " + nome + "\nidade: " + idade;
+        return "nome: " + nome + "\nidade: " + idade;
     }
 }
