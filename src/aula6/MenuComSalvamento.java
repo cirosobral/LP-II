@@ -16,10 +16,10 @@ public class MenuComSalvamento {
         // Carrega a lista de pessoas do arquivo ao iniciar o programa. Uma vez carregados os dados ficam na memória RAM
         List<Pessoa> pessoas = carregar();
 
-        while (true) {
-            // Cria o objeto Scanner para capturar entradas do usuário
-            Scanner in = new Scanner(System.in);
+        // Cria o objeto Scanner para capturar entradas do usuário
+        Scanner in = new Scanner(System.in);
 
+        while (true) {
             // Apresenta o menu de opções para o usuário
             System.out.println(); // Apresenta1 uma linha em branco antes do menu
             System.out.println("1 - Cadastrar pessoa");
@@ -87,6 +87,7 @@ public class MenuComSalvamento {
                     break;
                 case "4":
                     // Caso o usuário escolha sair do programa
+                    in.close();
                     return;
                 default:
                     // Caso o usuário digite uma opção inválida
@@ -99,15 +100,15 @@ public class MenuComSalvamento {
     private static List<Pessoa> carregar() {
         List<Pessoa> pessoas;
 
-        try {
-            // Tenta abrir o arquivo para leitura
-            ObjectInputStream ois = new ObjectInputStream(new FileInputStream(NOME_ARQUIVO));
-
+        // Tenta abrir o arquivo para leitura
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(NOME_ARQUIVO))) {
             // Lê a lista de pessoas do arquivo
             pessoas = (ArrayList<Pessoa>) ois.readObject();
+
+            ois.close();
         } catch (IOException | ClassNotFoundException e) {
             // Caso haja erro (por exemplo, arquivo não existir), cria uma nova lista vazia
-            pessoas = new ArrayList<Pessoa>();
+            pessoas = new ArrayList<>();
         }
 
         return pessoas;
@@ -115,9 +116,12 @@ public class MenuComSalvamento {
 
     // Método responsável por salvar a lista de pessoas no arquivo
     private static void salvar(List<Pessoa> pessoas) {
+        // Tenta abrir o arquivo para escrita
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("pessoas.bin"))) {
             // Serializa e salva a lista no arquivo
             oos.writeObject(pessoas);
+
+            oos.close();
         } catch (IOException e) {
             // Trata erros durante o processo de escrita no arquivo
             System.out.println("Erro ao serializar o objeto: " + e.getMessage());
