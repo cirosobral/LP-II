@@ -6,7 +6,7 @@ import java.time.Period;
 
 public class Pessoa implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    // private static final long serialVersionUID = 1L;
     private String nome;
     private LocalDate dataNascimento;
     private transient int idade;

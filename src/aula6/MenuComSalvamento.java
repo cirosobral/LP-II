@@ -1,16 +1,23 @@
 package aula6;
 
-import aula5.Pessoa;
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+import aula5.Pessoa;
 
 // Classe principal para gerenciar um menu com funcionalidade de salvar/ler dados em um arquivo binário
 public class MenuComSalvamento {
 
     // Constante com o nome do arquivo -- É uma boa prática para evitar errar na digitação do nome do arquivo
-    private static String NOME_ARQUIVO = "pessoas.bin";
+    private static final String NOME_ARQUIVO = "pessoas.bin";
 
     public static void main(String[] args) {
         // Carrega a lista de pessoas do arquivo ao iniciar o programa. Uma vez carregados os dados ficam na memória RAM
@@ -21,7 +28,7 @@ public class MenuComSalvamento {
 
         while (true) {
             // Apresenta o menu de opções para o usuário
-            System.out.println(); // Apresenta1 uma linha em branco antes do menu
+            System.out.println(); // Apresenta uma linha em branco antes do menu
             System.out.println("1 - Cadastrar pessoa");
             System.out.println("2 - Listar pessoas");
             System.out.println("3 - Excluir pessoa");
@@ -98,7 +105,7 @@ public class MenuComSalvamento {
 
     // Método responsável por entregar a lista de pessoas, seja carregando do arquivo ou criando um novo ArrayList
     private static List<Pessoa> carregar() {
-        List<Pessoa> pessoas;
+        List<Pessoa> pessoas = null;
 
         // Tenta abrir o arquivo para leitura
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(NOME_ARQUIVO))) {
